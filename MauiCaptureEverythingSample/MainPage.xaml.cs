@@ -1,4 +1,6 @@
-﻿namespace MauiCaptureEverythingSample;
+﻿using Microsoft.Maui.Media;
+
+namespace MauiCaptureEverythingSample;
 
 public partial class MainPage : ContentPage
 {
@@ -9,16 +11,18 @@ public partial class MainPage : ContentPage
 		InitializeComponent();
 	}
 
-	private void OnCounterClicked(object sender, EventArgs e)
+	private async void OnCounterClicked(object sender, EventArgs e)
 	{
-		count++;
+        var result = await stack.CaptureAsync();
+        //var stream = await result.OpenReadAsync();
 
-		if (count == 1)
-			CounterBtn.Text = $"Clicked {count} time";
-		else
-			CounterBtn.Text = $"Clicked {count} times";
+        using MemoryStream memoryStream = new();
+		//await stream.CopyToAsync(memoryStream);
+		await result.CopyToAsync(memoryStream);
 
-		SemanticScreenReader.Announce(CounterBtn.Text);
-	}
+#warning ONLY WORKS ON WINDOWS!
+		File.WriteAllBytes("C:\\users\\joverslu\\Desktop\\stack.png", memoryStream.ToArray());
+
+    }
 }
 

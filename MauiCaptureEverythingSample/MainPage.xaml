@@ -5,6 +5,8 @@
 
     <ScrollView>
         <VerticalStackLayout
+            x:Name="stack"
+            BackgroundColor="White"
             Spacing="25"
             Padding="30,0"
             VerticalOptions="Center">
